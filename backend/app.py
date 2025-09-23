@@ -3,7 +3,7 @@ from flask_cors import CORS
 from flask_migrate import Migrate
 
 from config import Config
-from models import db
+from models import db, Package # Make sure to import Package
 
 def create_app():
     app = Flask(__name__)
@@ -14,15 +14,22 @@ def create_app():
     Migrate(app, db)
     CORS(app) # Enable CORS for frontend communication
 
-    # A simple test route to prove the API is working
     @app.route('/api/packages')
     def get_packages():
-        # This is placeholder data for now
-        # Later, you will query this from your database
-        mock_packages = [
-            {"id": 1, "name": "Hawaiian Getaway", "description": "A sunny trip to Honolulu."},
-            {"id": 2, "name": "Tokyo Adventure", "description": "Explore the vibrant city of Tokyo."},
+        # Query the database for all packages
+        packages = Package.query.all()
+        
+        # Convert the list of package objects to a list of dictionaries
+        results = [
+            {
+                "id": pkg.id,
+                "name": pkg.name,
+                "description": pkg.description
+            } 
+            for pkg in packages
         ]
-        return jsonify(mock_packages)
+        
+        return jsonify(results)
 
+    # This line is crucial!
     return app
