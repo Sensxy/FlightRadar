@@ -26,10 +26,21 @@ def create_app():
     # Register blueprints
     app.register_blueprint(auth_bp, url_prefix='/api/auth') # <-- Register the auth routes
 
-    # ... your existing /api/packages route is here ...
     @app.route('/api/packages')
     def get_packages():
-        # ... (code for this route) ...
+        # Query the database for all packages
+        packages = Package.query.all()
+        
+        # This part creates the 'results' variable
+        results = [
+            {
+                "id": pkg.id,
+                "name": pkg.name,
+                "description": pkg.description
+            } 
+            for pkg in packages
+        ]
+        
         return jsonify(results)
 
     return app
