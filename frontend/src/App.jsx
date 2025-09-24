@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import axios from 'axios';
 import './App.css';
+import Navbar from './Navbar.jsx';
 
 function App() {
   const [packages, setPackages] = useState([]);
@@ -21,6 +22,7 @@ function App() {
 
   return (
     <>
+      <Navbar />
       <h1>FlightRadar Packages</h1>
       {error && <p style={{ color: 'red' }}>{error}</p>}
       <div className="card">
@@ -37,6 +39,7 @@ function App() {
         )}
       </div>
     </>
+
   );
 }
 
