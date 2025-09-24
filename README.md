@@ -1,72 +1,115 @@
-Travel Booking Agency 
-This is the backend REST API for a full-stack travel booking application. It is built with Python and Flask and is responsible for managing users, travel packages, and bookings.
+# FlightRadar 
 
-Tech Stack (Backend)
-Framework: Flask
+FlightRadar is a full-stack travel booking web application built with a Python/Flask REST API and a React single-page application frontend. It is responsible for managing users, travel packages, and bookings.
 
-Database ORM: Flask-SQLAlchemy
+## Tech Stack
 
-Database Migrations: Flask-Migrate
+* **Backend**
+    * Framework: **Flask**
+    * Database ORM: **Flask-SQLAlchemy**
+    * Database Migrations: **Flask-Migrate**
+    * Authentication: **Flask-JWT-Extended** & **Flask-Bcrypt**
+    * Database: **PostgreSQL**
 
-Authentication: Flask-JWT-Extended
+* **Frontend**
+    * Framework: **React** (with Vite)
+    * Routing: **React Router**
+    * API Communication: **Axios**
 
-Database: SQLite (for development)
+## Getting Started
 
-Getting Started
+Follow these instructions to get both the backend and frontend servers running on your local machine.
 
-Follow these instructions to get the backend server running on your local machine.
+### Prerequisites
 
-Prerequisites
-Python 3.10+
+* Python 3.10+ & Pip
+* Node.js & npm
+* PostgreSQL
 
-Pip
+### 1. Backend Setup
 
-Setup and Installation
-Clone the repository:
+1.  **Clone the repository**:
+    ```bash
+    git clone [https://github.com/Sensxy/FlightRadar.git](https://github.com/Sensxy/FlightRadar.git)
+    cd FlightRadar
+    ```
 
-Bash
+2.  **Navigate to the backend directory**:
+    ```bash
+    cd backend
+    ```
 
-git clone https://github.com/your-username/your-repo-name.git
-cd your-repo-name
-Navigate to the backend directory:
+3.  **Create and activate a virtual environment**:
+    * On Windows:
+        ```bash
+        python -m venv venv
+        venv\Scripts\activate
+        ```
+    * On macOS/Linux:
+        ```bash
+        python3 -m venv venv
+        source venv/bin/activate
+        ```
 
-Bash
+4.  **Install Python dependencies**:
+    ```bash
+    pip install -r requirements.txt
+    ```
+5.  **Set up the database & environment**:
+    * In PostgreSQL, create a new database (e.g., `CREATE DATABASE flightradar;`).
+    * In the `backend` folder, create a `.env` file with your database URL:
+        `DATABASE_URL="postgresql://postgres:your_password@localhost:5432/flightradar"`
+    * In the `backend` folder, create a `.flaskenv` file with the app entry point:
+        `FLASK_APP=run.py`
 
-cd backend
-Create and activate a virtual environment:
+6.  **Create the database tables**:
+    ```bash
+    flask db init
+    flask db migrate -m "Initial migration"
+    flask db upgrade
+    ```
+7.  **(Optional) Seed the database with sample packages**:
+    ```bash
+    flask shell
+    ```
+    Then inside the shell, run:
+    ```python
+    from models import Package, db
+    pkg1 = Package(name='Parisian Dream', description='A romantic tour of Paris.')
+    pkg2 = Package(name='Roman Holiday', description='Explore the ancient ruins of Rome.')
+    db.session.add_all([pkg1, pkg2])
+    db.session.commit()
+    exit()
+    ```
+8.  **Run the development server**:
+    ```bash
+    flask run
+    ```
+    The API is now running at `http://127.0.0.1:5000`.
 
-Bash
+### 2. Frontend Setup
 
-python3 -m venv venv
-source venv/bin/activate
-Install dependencies:
+1.  **Open a new terminal**.
+2.  **Navigate to the frontend directory**:
+    ```bash
+    cd frontend
+    ```
+3.  **Install Node.js dependencies**:
+    ```bash
+    npm install
+    ```
+4.  **Run the development server**:
+    ```bash
+    npm run dev
+    ```
+    The frontend is now running at `http://localhost:5173`.
 
-Bash
+## Available API Endpoints
 
-pip install -r requirements.txt
-Create and seed the database:
-This command will create the database file and populate it with initial sample data.
-
-Bash
-
-# (Optional) If you have a .flaskenv file, this will be read automatically
-# export FLASK_APP="manage.py"
-
-flask db upgrade
-flask seed
-Run the development server:
-
-Bash
-
-flask run
-The API is now running and available at http://127.0.0.1:5000.
-
-Available API Endpoints
-Use a tool like Thunder Client or Postman to test the following endpoints.
-
-Method	Endpoint	Description
-GET	/packages/	Retrieves a list of all travel packages.
-POST	/packages/	Creates a new travel package.
-POST	/auth/register	(To be implemented) Creates a new user.
-POST	/auth/login	(To be implemented) Logs in a user.
-This version is concise, accurate to your current progress, and gives anyone (including your future self) a clear and simple path to get the backend running. You can expand it with the frontend and Docker details as you build them out.
+| Method | Endpoint | Description | Auth Required |
+| :--- | :--- | :--- | :--- |
+| `POST` | `/api/auth/register` | Creates a new user. | No |
+| `POST` | `/api/auth/login` | Logs in a user, returns a JWT. | No |
+| `GET` | `/api/packages` | Retrieves packages. Accepts `?search=` query param. | No |
+| `POST` | `/api/packages/<id>/book`| Books a package for the authenticated user. | Yes |
+| `GET` | `/api/my-bookings` | Gets the authenticated user's bookings. | Yes |
