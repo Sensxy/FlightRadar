@@ -1,5 +1,7 @@
+# backend/auth.py
 from flask import Blueprint, request, jsonify
-from models import db, User
+from models import User
+from extensions import db, bcrypt # <-- Import from extensions
 from flask_jwt_extended import create_access_token
 
 auth_bp = Blueprint('auth', __name__)
@@ -30,7 +32,6 @@ def login():
     user = User.query.filter_by(username=username).first()
 
     if user and user.check_password(password):
-        # Create a new token with the user's id as the identity
         access_token = create_access_token(identity=user.id)
         return jsonify(access_token=access_token)
 

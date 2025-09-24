@@ -1,8 +1,5 @@
-from flask_sqlalchemy import SQLAlchemy
-from flask_bcrypt import Bcrypt
-
-db = SQLAlchemy()
-bcrypt = Bcrypt()
+# backend/models.py
+from extensions import db, bcrypt # <-- Import from extensions
 
 class User(db.Model):
     id = db.Column(db.Integer, primary_key=True)
