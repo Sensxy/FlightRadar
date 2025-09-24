@@ -3,6 +3,7 @@ from flask import Flask, jsonify
 from flask_cors import CORS
 from flask_migrate import Migrate
 from flask_jwt_extended import JWTManager # <-- Import JWTManager
+from flask_jwt_extended import JWTManager, jwt_required, get_jwt_identity
 
 from config import Config
 from models import db, Package, bcrypt # <-- Import bcrypt
@@ -25,6 +26,21 @@ def create_app():
 
     # Register blueprints
     app.register_blueprint(auth_bp, url_prefix='/api/auth') # <-- Register the auth routes
+
+    @app.route('/api/my-bookings')
+    @jwt_required() # This decorator protects the route
+    def my_bookings():
+    # Get the user's ID from the JWT
+        current_user_id = get_jwt_identity()
+
+    # In a real app, you would query the Booking model here.
+    # For now, we'll return some mock data.
+        mock_bookings = [
+            {"id": 1, "package_name": "Parisian Dream"},
+            {"id": 2, "package_name": "Roman Holiday"},
+        ]
+
+        return jsonify(mock_bookings)
 
     @app.route('/api/packages')
     def get_packages():
