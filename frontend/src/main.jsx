@@ -21,11 +21,11 @@ const router = createBrowserRouter([
     path: '/login',
     element: <Login />,
   },
-  // --- THIS ROUTE IS TEMPORARILY DISABLED ---
-  // {
-  //   path: '/my-bookings',
-  //   element: <MyBookings />,
-  // },
+
+   {
+     path: '/my-bookings',
+     element: <MyBookings />,
+   },
 ]);
 
 ReactDOM.createRoot(document.getElementById('root')).render(

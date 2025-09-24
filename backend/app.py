@@ -25,16 +25,16 @@ def create_app():
     # Register blueprints
     app.register_blueprint(auth_bp, url_prefix='/api/auth')
 
-    # --- THIS SECTION IS TEMPORARILY DISABLED ---
-    # @app.route('/api/my-bookings')
-    # @jwt_required()
-    # def my_bookings():
-    #     current_user_id = get_jwt_identity()
-    #     mock_bookings = [
-    #         {"id": 1, "package_name": "Parisian Dream", "user_id": current_user_id},
-    #         {"id": 2, "package_name": "Roman Holiday", "user_id": current_user_id},
-    #     ]
-    #     return jsonify(mock_bookings)
+    
+    @app.route('/api/my-bookings')
+    @jwt_required()
+    def my_bookings():
+        current_user_id = get_jwt_identity()
+        mock_bookings = [
+            {"id": 1, "package_name": "Parisian Dream", "user_id": current_user_id},
+            {"id": 2, "package_name": "Roman Holiday", "user_id": current_user_id},
+        ]
+        return jsonify(mock_bookings)
 
 
     @app.route('/api/packages')
