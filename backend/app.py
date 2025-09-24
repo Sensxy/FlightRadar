@@ -36,17 +36,24 @@ def create_app():
     #     ]
     #     return jsonify(mock_bookings)
 
+
     @app.route('/api/packages')
     def get_packages():
+    # Get the search term from the URL query parameters
         search_term = request.args.get('search', '')
+
+    # Start with a query for all packages
         query = Package.query
+
+    # If a search term is provided, filter the results
         if search_term:
             query = query.filter(Package.name.ilike(f'%{search_term}%'))
+
         packages = query.all()
         results = [
             {"id": pkg.id, "name": pkg.name, "description": pkg.description}
             for pkg in packages
         ]
         return jsonify(results)
-
+    
     return app

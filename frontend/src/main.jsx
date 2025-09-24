@@ -5,10 +5,9 @@ import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 import App from './App.jsx';
 import Register from './Register.jsx';
 import Login from './Login.jsx';
-import MyBookings from './MyBookgings.jsx';
+import MyBookings from './MyBookings.jsx';
 import './index.css';
 
-// Define your application's routes
 const router = createBrowserRouter([
   {
     path: '/',
