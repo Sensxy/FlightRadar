@@ -1,4 +1,5 @@
 FlightRadar 
+
 This is a full-stack travel booking application built with a Python/Flask REST API and a React single-page application frontend. It is responsible for managing users, travel packages, and bookings.
 
 Tech Stack
